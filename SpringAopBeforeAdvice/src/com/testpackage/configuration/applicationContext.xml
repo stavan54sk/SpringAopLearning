@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<bean id="employeeBean" class="com.testpackage.dto.Employee">
+<property name="id" value="111"></property>
+<property name="name" value="Stavan"></property>
+<property name="address" value="Hyderabad"></property>
+</bean>
+
+<bean id="employeeService" class="com.testpackage.service.EmployeeServiceImpl">
+</bean>
+
+<bean id="advice" class="com.testpackage.advice.EmployeeValidator">
+</bean>
+
+<bean id="pointcut" class="org.springframework.aop.support.NameMatchMethodPointcut">
+<property name="mappedNames">
+           <list>
+               <value>getEmployeeInfo</value>
+               <value>displayEmployeeInfo</value>
+            </list>
+    </property>
+</bean>
+
+<bean id="advisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+        <property name="pointcut" ref="pointcut" />
+        <property name="advice" ref="advice" />
+ </bean>
+ 
+ <bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="employeeService" />
+        <property name="interceptorNames">
+            <list>
+                <value>advisor</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

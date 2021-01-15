@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd"> 
+
+    <!-- Generic Aspect -->
+    <bean id="genericAspect" class="com.testpackage.aspect.AspectClass"/>
+    
+    <bean id="showService" class="com.testpackage.service.ShowServiceImpl"/>
+    
+    <bean id="show" class="com.testpackage.dto.ThreeDShow">
+    <property name="name" value="3D"/>
+    <property name="time" value="3-6"/>
+    <property name="tktCost" value="INR 1000/-"/>
+    </bean>
+    
+    <aop:config> 
+        <aop:aspect ref="genericAspect">
+            <aop:pointcut id="genericPointCut" expression="execution(* com.testpackage.service.ShowService.*(..))"/>
+             <aop:before method="beforeShow" pointcut-ref="genericPointCut" /> 
+             <aop:after method="afterShow" pointcut-ref="genericPointCut" />
+             <aop:after-throwing method="afterThrowingShow" pointcut-ref="genericPointCut" throwing="exception" />
+             <aop:around method="aroundShow" pointcut-ref="genericPointCut" /> 
+             <aop:after-returning method="afterReturningShow" pointcut-ref="genericPointCut" returning="returnObject" /> 
+        </aop:aspect> 
+    </aop:config> 
+    
+</beans>
